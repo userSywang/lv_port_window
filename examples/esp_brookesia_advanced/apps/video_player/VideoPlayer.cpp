@@ -174,7 +174,7 @@ uint8_t AppVideoPlayer::searchMideaFiles(void)
     // Search and store video files
     if (DIR *d = opendir(BSP_SD_MOUNT_POINT)) {
         while (struct dirent *dir = readdir(d)) {
-            if (dir->d_type != DT_DIR && strstr(dir->d_name, APP_SUPPORT_VIDEO_FILE_EXT)) {
+            if (bsp_is_normal_file(dir,BSP_SD_MOUNT_POINT)== 0 && strstr(dir->d_name, APP_SUPPORT_VIDEO_FILE_EXT)) {
                 if (_midea_info_vect.size() >= APP_MAX_VIDEO_NUM) {
                     ESP_LOGE(TAG, "Too many video files");
                     break;

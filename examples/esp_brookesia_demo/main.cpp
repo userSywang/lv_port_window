@@ -7,7 +7,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <signal.h>
-#include <execinfo.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -20,8 +20,6 @@
 #include "app_examples/phone/simple_conf/src/phone_app_simple_conf.hpp"
 #include "app_examples/phone/complex_conf/src/phone_app_complex_conf.hpp"
 #include "app_examples/phone/squareline/src/phone_app_squareline.hpp"
-
-#define BACKTRACE_SIZE 100
 
 
 #define MONITOR_HOR_RES     SDL_HOR_RES
@@ -36,31 +34,27 @@
 static void hal_init(void);
 static void hal_deinit(void);
 static void on_clock_update_timer_cb(struct _lv_timer_t *t);
+static void esp_brookesia_demo_init(void);
 
+int SDL_main(int argc, char *argv[])
+{
+    printf("Signal handlers registered\n");
+    
+    /*LittlevGL init*/
+    lv_init();
+    
+    /*Initialize the hardware abstraction layer (display, input devices, etc.)*/
+    hal_init();
 
-void segfault_handler(int sig) {
-    void *array[BACKTRACE_SIZE];
-    size_t size;
-    
-    // 获取调用栈
-    size = backtrace(array, BACKTRACE_SIZE);
-    
-    // 输出错误信息
-    fprintf(stderr, "Error: signal %d:\n", sig);
-    
-    // 打印调用栈
-    fprintf(stderr, "Backtrace:\n");
-    char **bt_symbols = backtrace_symbols(array, size);
-    if (bt_symbols != NULL) {
-        for (size_t i = 0; i < size; i++) {
-            fprintf(stderr, "%s\n", bt_symbols[i]);
-        }
-        free(bt_symbols);
-    } else {
-        backtrace_symbols_fd(array, size, STDERR_FILENO);
+    esp_brookesia_demo_init();
+
+    /*Handle LitlevGL tasks (tickless mode)*/
+    while(1) {
+        lv_timer_handler();
+        usleep(5000);
     }
-    
-    exit(1);
+
+    return 0;
 }
 
 void esp_brookesia_demo_init(void)
@@ -117,34 +111,6 @@ void esp_brookesia_demo_init(void)
     /* Release the lock */
     //bsp_display_unlock();
     
-}
-
-int main(void)
-{
-    /* 注册段错误信号处理函数 */
-    signal(SIGSEGV, segfault_handler);
-    signal(SIGABRT, segfault_handler);  /* 捕获abort()调用 */
-    signal(SIGFPE, segfault_handler);   /* 捕获浮点异常 */
-    signal(SIGILL, segfault_handler);   /* 捕获非法指令 */
-    signal(SIGBUS, segfault_handler);   /* 捕获总线错误 */
-    
-    printf("Signal handlers registered\n");
-    
-    /*LittlevGL init*/
-    lv_init();
-    
-    /*Initialize the hardware abstraction layer (display, input devices, etc.)*/
-    hal_init();
-
-    esp_brookesia_demo_init();
-
-    /*Handle LitlevGL tasks (tickless mode)*/
-    while(1) {
-        lv_timer_handler();
-        usleep(5000);
-    }
-
-    return 0;
 }
 
 extern "C" {

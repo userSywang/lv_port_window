@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include "nvs.h"
+#include "dirent.h"
 #include "audio_player.h"
 #include "file_iterator.h"
 #include "esp_log.h"
@@ -32,6 +33,15 @@ esp_err_t bsp_extra_player_init(void);
  * @return esp_err_t ESP_OK成功，否则失败
  */
 esp_err_t bsp_extra_player_play_file(const char* file_path);
+
+/**
+ * @brief 检查是否为普通文件
+ *
+ * @param entry 文件项
+ * @param directory 文件夹路径
+ * @return int 1 是普通文件，0 不是普通文件
+ */
+int bsp_is_normal_file(struct dirent* entry, const char* directory);
 
 /**
  * @brief 初始化文件迭代器实例

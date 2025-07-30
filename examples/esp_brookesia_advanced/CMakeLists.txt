@@ -3,10 +3,6 @@ cmake_minimum_required(VERSION 3.12.4)
 
 project(esp_brookesia_advanced)
 
-# 添加调试标志
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -rdynamic")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -rdynamic")
-
 # 添加驱动编译选项
 option(ENABLE_DRIVERS "Enable building drivers" OFF)
 
@@ -34,8 +30,12 @@ target_link_libraries(${PROJECT_NAME} PRIVATE lv_drivers)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE esp-brookesia)
 
-# 链接 SDL2 
-target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES})
+# 动态链接 SDL2 
+#target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES})
+
+# 静态链接 SDL2 
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_STATIC_LIBRARIES})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++ -static-libgcc")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE game_2048)
 target_link_libraries(${PROJECT_NAME} PRIVATE calculator)

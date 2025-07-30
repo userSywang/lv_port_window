@@ -7,43 +7,15 @@
 #include <time.h>
 #include <sys/time.h>
 #include <signal.h>
-#include <execinfo.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 
-//#define SDL_MAIN_HANDLED /*To fix SDL's "undefined reference to WinMain" issue*/
 #include <SDL2/SDL.h>
 #include "lv_drivers/sdl/sdl.h"
 
-#define BACKTRACE_SIZE 100
-
-void segfault_handler(int sig) {
-    void *array[BACKTRACE_SIZE];
-    size_t size;
-    
-    // 获取调用栈
-    size = backtrace(array, BACKTRACE_SIZE);
-    
-    // 输出错误信息
-    fprintf(stderr, "Error: signal %d:\n", sig);
-    
-    // 打印调用栈
-    fprintf(stderr, "Backtrace:\n");
-    char **bt_symbols = backtrace_symbols(array, size);
-    if (bt_symbols != NULL) {
-        for (size_t i = 0; i < size; i++) {
-            fprintf(stderr, "%s\n", bt_symbols[i]);
-        }
-        free(bt_symbols);
-    } else {
-        backtrace_symbols_fd(array, size, STDERR_FILENO);
-    }
-    
-    exit(1);
-}
-
-#define MONITOR_HOR_RES     SDL_HOR_RES
-#define MONITOR_VER_RES     SDL_VER_RES
+#  define MONITOR_HOR_RES     SDL_HOR_RES
+#  define MONITOR_VER_RES     SDL_VER_RES
 
 /**********************
  *  STATIC PROTOTYPES
@@ -53,15 +25,8 @@ static void hal_deinit(void);
 
 #define DISP_BUF_SIZE (128 * 1024)
 
-int main(void)
+int SDL_main(int argc, char *argv[])
 {
-    /* 注册段错误信号处理函数 */
-    signal(SIGSEGV, segfault_handler);
-    signal(SIGABRT, segfault_handler);  /* 捕获abort()调用 */
-    signal(SIGFPE, segfault_handler);   /* 捕获浮点异常 */
-    signal(SIGILL, segfault_handler);   /* 捕获非法指令 */
-    signal(SIGBUS, segfault_handler);   /* 捕获总线错误 */
-    
     printf("Signal handlers registered\n");
     
     /*LittlevGL init*/
@@ -81,6 +46,7 @@ int main(void)
 
     return 0;
 }
+
 
 /*Set in lv_conf.h as `LV_TICK_CUSTOM_SYS_TIME_EXPR`*/
 uint32_t custom_tick_get(void)

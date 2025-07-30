@@ -4,13 +4,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
+#include <sys/stat.h>
 
 static const char* TAG = "BSP_EXTRA";
+
+#define MAX_PATH 260
 
 esp_err_t bsp_extra_player_init(void)
 {
     ESP_LOGI(TAG, "初始化播放器");
     // 在模拟环境中，我们只需返回成功
+
+    esp_log_init("esp-brookesia.log"); // 初始化日志记录
     return ESP_OK;
 }
 
@@ -24,6 +29,32 @@ esp_err_t bsp_extra_player_play_file(const char* file_path)
     ESP_LOGI(TAG, "播放文件: %s", file_path);
     // 在模拟环境中，我们只需打印文件名
     return ESP_OK;
+}
+
+int bsp_is_normal_file(struct dirent* entry, const char* directory)
+{
+    if (entry == NULL || directory == NULL) {
+        return 0;
+    }
+
+    // 忽略当前目录和上级目录
+    if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+        return 0;
+    }
+
+    char fullPath[MAX_PATH];
+    snprintf(fullPath, sizeof(fullPath), "%s\\%s", directory, entry->d_name);
+
+    struct stat statbuf;
+    if (stat(fullPath, &statbuf) != 0) {
+        perror("stat failed");
+        return 0; // 如果无法获取文件状态，返回0
+    }
+
+    if (S_ISREG(statbuf.st_mode)) { // 判断是否为常规文件
+        return 1; // 找到一个常规文件
+    }
+    return 0; // 不是常规文件
 }
 
 esp_err_t bsp_extra_file_instance_init(const char* directory, file_iterator_instance_t** iterator)
@@ -59,7 +90,7 @@ esp_err_t bsp_extra_file_instance_init(const char* directory, file_iterator_inst
     // 计算文件数量
     struct dirent* entry;
     while ((entry = readdir(dir)) != NULL) {
-        if (entry->d_type == DT_REG) { // 只计算常规文件
+        if (bsp_is_normal_file(entry, directory) == 1){ // 只计算常规文件
             (*iterator)->file_count++;
         }
     }
@@ -88,7 +119,7 @@ esp_err_t bsp_extra_file_instance_init(const char* directory, file_iterator_inst
     // 填充文件列表
     int index = 0;
     while ((entry = readdir(dir)) != NULL && index < (*iterator)->file_count) {
-        if (entry->d_type == DT_REG) { // 只添加常规文件
+        if (bsp_is_normal_file(entry, directory) == 1) { // 只添加常规文件
             // 构建完整路径
             size_t path_len = strlen(directory) + strlen(entry->d_name) + 2; // +2 for '/' and '\0'
             char* full_path = (char*)malloc(path_len);

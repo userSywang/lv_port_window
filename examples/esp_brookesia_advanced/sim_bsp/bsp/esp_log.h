@@ -19,6 +19,18 @@ typedef enum {
 } esp_log_level_t;
 
 /**
+ * @brief 初始化日志文件
+ *
+ * @param filename 日志文件名
+ */
+void esp_log_init(const char *filename);
+
+/**
+ * @brief 关闭日志文件
+ */
+void esp_log_close();
+
+/**
  * @brief 设置日志级别
  *
  * @param tag 日志标签
@@ -27,29 +39,39 @@ typedef enum {
 void esp_log_level_set(const char* tag, esp_log_level_t level);
 
 /**
+ * @brief 内部日志写入函数
+ */
+void esp_log_write(const char *tag, const char *level, const char *format, va_list args);
+
+/**
+ * @brief 统一日志输出函数
+ */
+void esp_log_output(const char *tag, const char *level, const char *format, ...);
+
+/**
  * @brief 错误级别日志宏
  */
-#define ESP_LOGE(tag, format, ...) printf("[E][%s] " format "\n", tag, ##__VA_ARGS__)
+#define ESP_LOGE(tag, format, ...) esp_log_output(tag, "ERROR", format, ##__VA_ARGS__)
 
 /**
  * @brief 警告级别日志宏
  */
-#define ESP_LOGW(tag, format, ...) printf("[W][%s] " format "\n", tag, ##__VA_ARGS__)
+#define ESP_LOGW(tag, format, ...) esp_log_output(tag, "WARN", format, ##__VA_ARGS__)
 
 /**
  * @brief 信息级别日志宏
  */
-#define ESP_LOGI(tag, format, ...) printf("[I][%s] " format "\n", tag, ##__VA_ARGS__)
+#define ESP_LOGI(tag, format, ...) esp_log_output(tag, "INFO", format, ##__VA_ARGS__)
 
 /**
  * @brief 调试级别日志宏
  */
-#define ESP_LOGD(tag, format, ...) printf("[D][%s] " format "\n", tag, ##__VA_ARGS__)
+#define ESP_LOGD(tag, format, ...) esp_log_output(tag, "DEBUG", format, ##__VA_ARGS__)
 
 /**
  * @brief 详细级别日志宏
  */
-#define ESP_LOGV(tag, format, ...) printf("[V][%s] " format "\n", tag, ##__VA_ARGS__)
+#define ESP_LOGV(tag, format, ...) esp_log_output(tag, "VERBOSE", format, ##__VA_ARGS__)
 
 #ifdef __cplusplus
 }

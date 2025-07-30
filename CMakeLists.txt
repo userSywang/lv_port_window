@@ -21,6 +21,9 @@ set(CMAKE_CXX_FLAGS "-O0 -g -Wall -Wextra -Wshadow -Wundef -Wno-unused-function 
 set(CMAKE_OBJECT_PATH_MAX 512)  # Avoid long path error in Windows
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# 查找SDL2库
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
 
 if(ENABLE_DRIVERS)
     add_subdirectory(drivers)
