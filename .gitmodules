@@ -1,0 +1,10 @@
+[submodule "lvgl"]
+	path = lvgl
+	url = https://gitcode.com/aiprtem_lvgl/lvgl.git
+[submodule "lv_drivers"]
+	path = lv_drivers
+	url = https://gitcode.com/aiprtem_lvgl/lv_drivers.git
+[submodule "esp-brookesia"]
+	path = esp-brookesia
+	url = https://gitcode.com/aiprtem_lvgl/esp-brookesia.git
+	branch = win32
