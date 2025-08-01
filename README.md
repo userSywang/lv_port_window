@@ -73,7 +73,7 @@ winenv开发环境的使用方法请参考：https://blog.csdn.net/prtem/article
 运行示例应用：
 
 ```bash
-# 在build目录下
+# 在项目根目录下
 cd out/lv_port_sdl/bin
 ./esp_brookesia_advanced
 ```
