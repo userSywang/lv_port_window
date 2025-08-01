@@ -60,7 +60,7 @@ winenv开发环境的使用方法请参考：https://blog.csdn.net/prtem/article
    make install
    ```
 
-   > 注意：`install`目标默认安装到`out`目录的`lv_port_sdl`子目录。如果需要调整安装目录，请使用`CMAKE_INSTALL_PREFIX`选项更改`CMakeLists.txt`文件。
+   > 注意：`install`目标默认安装到`out`目录的`lv_port_window`子目录。如果需要调整安装目录，请使用`CMAKE_INSTALL_PREFIX`选项更改`CMakeLists.txt`文件。
 
 ## 使用方法
 
@@ -74,7 +74,7 @@ winenv开发环境的使用方法请参考：https://blog.csdn.net/prtem/article
 
 ```bash
 # 在项目根目录下
-cd out/lv_port_sdl/bin
+cd out/lv_port_window/bin
 ./esp_brookesia_advanced
 ```
 
