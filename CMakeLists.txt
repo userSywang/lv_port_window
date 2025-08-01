@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12.4)
 
 project(lv_port_sdl)
 
-set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/out/lv_port_sdl)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/out/lv_port_window)
 
 # 添加驱动编译选项
 option(ENABLE_DRIVERS "Enable building drivers" OFF)
