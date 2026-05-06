@@ -24,6 +24,7 @@ static const char *TAG = "AppVideoPlayer";
 LV_IMG_DECLARE(breaking_news);
 LV_IMG_DECLARE(img_app_video_player);
 
+//构造函数，构造函数：后面的初始化列表用于在对象创建时初始化成员变量
 AppVideoPlayer::AppVideoPlayer(uint16_t height, uint16_t width):
     ESP_Brookesia_PhoneApp("Video Player", &img_app_video_player, true), // auto_resize_visual_area
     _height(height),

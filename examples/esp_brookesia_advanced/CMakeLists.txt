@@ -42,6 +42,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE calculator)
 target_link_libraries(${PROJECT_NAME} PRIVATE draw)
 target_link_libraries(${PROJECT_NAME} PRIVATE music_player)
 target_link_libraries(${PROJECT_NAME} PRIVATE video_player)
+target_link_libraries(${PROJECT_NAME} PRIVATE scroll_test)
 
 set_target_properties(
   ${PROJECT_NAME}

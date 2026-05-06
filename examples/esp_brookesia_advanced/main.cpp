@@ -89,6 +89,10 @@ void esp_brookesia_demo_init(void)
     ESP_BROOKESIA_CHECK_NULL_EXIT(drawpanel, "Failed to create calculator");
     ESP_BROOKESIA_CHECK_FALSE_EXIT((phone->installApp(drawpanel) >= 0),"Failed to begin calculator");
 
+    ScrollTestApp *scroll_test = new ScrollTestApp();
+    ESP_BROOKESIA_CHECK_NULL_EXIT(scroll_test, "Failed to create scroll_test");
+    ESP_BROOKESIA_CHECK_FALSE_EXIT((phone->installApp(scroll_test) >= 0), "Failed to begin scroll_test");
+
     Calculator *calculator = new Calculator();
     ESP_BROOKESIA_CHECK_NULL_EXIT(calculator, "Failed to create calculator");
     ESP_BROOKESIA_CHECK_FALSE_EXIT((phone->installApp(calculator) >= 0), "Failed to begin calculator");

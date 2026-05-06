@@ -8,3 +8,4 @@
 //#include "camera/Camera.hpp"
 #include "video_player/VideoPlayer.hpp"
 #include "draw/Drawpanel.hpp"
+#include "scroll_test/ScrollTestApp.hpp"
