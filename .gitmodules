@@ -3,7 +3,7 @@
 	url = https://gitcode.com/aiprtem_lvgl/lvgl.git
 [submodule "esp-brookesia"]
 	path = esp-brookesia
-	url = https://gitcode.com/aiprtem_lvgl/esp-brookesia.git
+	url = https://github.com/userSywang/esp-brookesia.git
 	branch = win32
 [submodule "lv_drivers"]
 	path = lv_drivers
